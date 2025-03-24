@@ -1,0 +1,100 @@
+version: "3.8"
+
+services:
+  web:
+    build: .
+    command: gunicorn mcp_nexus.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - ./:/app/
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+      - logs_volume:/app/logs
+    expose:
+      - 8000
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+      - redis
+    restart: always
+
+  db:
+    image: postgres:14
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.env
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_DB=${DB_NAME}
+    restart: always
+
+  redis:
+    image: redis:7
+    volumes:
+      - redis_data:/data
+    restart: always
+
+  celery:
+    build: .
+    command: celery -A mcp_nexus worker -l info
+    volumes:
+      - ./:/app/
+      - logs_volume:/app/logs
+    env_file:
+      - ./.env
+    depends_on:
+      - web
+      - redis
+      - db
+    restart: always
+
+  celery-beat:
+    build: .
+    command: celery -A mcp_nexus beat -l info
+    volumes:
+      - ./:/app/
+      - logs_volume:/app/logs
+    env_file:
+      - ./.env
+    depends_on:
+      - web
+      - redis
+      - db
+    restart: always
+
+  nginx:
+    image: nginx:1.21
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - ./nginx/html:/usr/share/nginx/html
+    depends_on:
+      - web
+    restart: always
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - ./nginx/html:/usr/share/nginx/html
+    depends_on:
+      - nginx
+    command: certonly --webroot --webroot-path=/usr/share/nginx/html --email admin@mcpnexus.io --agree-tos --no-eff-email --staging -d mcpnexus.io -d www.mcpnexus.io
+
+volumes:
+  postgres_data:
+  redis_data:
+  static_volume:
+  media_volume:
+  logs_volume:
+  certbot-etc:
+  certbot-var:
