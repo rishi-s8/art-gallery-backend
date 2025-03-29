@@ -4,7 +4,7 @@ from celery import shared_task
 from django.utils import timezone
 from django.conf import settings
 from servers.models import Server
-from .models import VerificationRequest, HealthCheck
+from .models import HealthCheck
 
 logger = logging.getLogger('mcp_nexus')
 

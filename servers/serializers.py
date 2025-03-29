@@ -54,7 +54,7 @@ class ServerSummarySerializer(serializers.ModelSerializer):
         fields = [
             'id', 'name', 'slug', 'description', 'provider', 'types',
             'tags', 'verified', 'created_at', 'updated_at', 'logo_url',
-            'rating', 'uptime'
+            'rating', 'uptime', 'url', 'documentation_url'
         ]
         read_only_fields = ['id', 'verified', 'created_at', 'updated_at', 'rating', 'uptime']
 

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import URLResolver, path, include, URLPattern
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 
 api_v1_patterns = [
@@ -11,7 +11,7 @@ api_v1_patterns = [
     path('webhooks/', include('webhooks.urls')),
 ]
 
-urlpatterns = [
+urlpatterns: list[URLPattern | URLResolver] = [
     path('admin/', admin.site.urls),
 
     # API v1 URLs

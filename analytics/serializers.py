@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import ServerAnalytics, RequestLog, NetworkAnalytics, ClientTrafficLog
+from .models import ServerAnalytics, RequestLog, ClientTrafficLog
 
 class TimeSeriesPointSerializer(serializers.Serializer):
     """Serializer for time series data points."""
@@ -21,29 +21,29 @@ class MetricsSerializer(serializers.Serializer):
     error_rate = serializers.FloatField()
     uptime_percentage = serializers.FloatField()
 
+class TimeSeriesSerializer(serializers.Serializer):
+    """Serializer for time series data."""
+    requests = TimeSeriesPointSerializer(many=True)
+    response_times = TimeSeriesPointSerializer(many=True)
+    errors = TimeSeriesPointSerializer(many=True)
+
 class ServerAnalyticsSerializer(serializers.Serializer):
     """Serializer for server analytics."""
     server_id = serializers.UUIDField()
     period = serializers.ChoiceField(choices=['day', 'week', 'month', 'year', 'custom'])
     start_date = serializers.DateField()
     end_date = serializers.DateField()
-    
+
     metrics = MetricsSerializer()
-    
-    time_series = serializers.Serializer(
-        requests=TimeSeriesPointSerializer(many=True),
-        response_times=TimeSeriesPointSerializer(many=True),
-        errors=TimeSeriesPointSerializer(many=True)
-    )
-    
+    time_series = TimeSeriesSerializer()
     top_clients = TopItemSerializer(many=True)
     top_capabilities = TopItemSerializer(many=True)
 
 class RequestLogSerializer(serializers.ModelSerializer):
     """Serializer for request logs."""
     server_name = serializers.CharField(source='server.name', read_only=True)
-    
-    class Meta:
+
+    class Meta: #type: ignore
         model = RequestLog
         fields = [
             'id', 'server', 'server_name', 'client_id', 'timestamp', 'capability',
@@ -54,59 +54,62 @@ class RequestLogSerializer(serializers.ModelSerializer):
 
 class RequestLogCreateSerializer(serializers.ModelSerializer):
     """Serializer for creating request logs."""
-    class Meta:
+    class Meta: #type: ignore
         model = RequestLog
         fields = [
             'server', 'client_id', 'capability', 'status_code', 'response_time_ms',
             'user_agent', 'ip_address', 'request_headers', 'request_body',
             'is_error', 'error_details'
         ]
-    
+
     def create(self, validated_data):
         """Create request log with current timestamp."""
         from django.utils import timezone
         validated_data['timestamp'] = timezone.now()
-        
+
         # Determine if request is an error based on status code
         if 'status_code' in validated_data and validated_data['status_code']:
             status_code = validated_data['status_code']
             validated_data['is_error'] = status_code >= 400
-        
+
         return super().create(validated_data)
+
+class NetworkMetricsSerializer(serializers.Serializer):
+    """Serializer for network metrics."""
+    total_servers = serializers.IntegerField()
+    active_servers = serializers.IntegerField()
+    total_requests = serializers.IntegerField()
+    unique_clients = serializers.IntegerField()
+    new_servers = serializers.IntegerField()
+
+class ServerTypesSerializer(serializers.Serializer):
+    """Serializer for server types."""
+    agents = serializers.IntegerField()
+    resources = serializers.IntegerField()
+    tools = serializers.IntegerField()
+
+class NetworkTimeSeriesSerializer(serializers.Serializer):
+    """Serializer for network time series data."""
+    servers = TimeSeriesPointSerializer(many=True)
+    requests = TimeSeriesPointSerializer(many=True)
 
 class NetworkAnalyticsSerializer(serializers.Serializer):
     """Serializer for network analytics."""
     period = serializers.ChoiceField(choices=['day', 'week', 'month', 'year'])
     start_date = serializers.DateField()
     end_date = serializers.DateField()
-    
-    metrics = serializers.Serializer(
-        total_servers=serializers.IntegerField(),
-        active_servers=serializers.IntegerField(),
-        total_requests=serializers.IntegerField(),
-        unique_clients=serializers.IntegerField(),
-        new_servers=serializers.IntegerField()
-    )
-    
-    server_types = serializers.Serializer(
-        agents=serializers.IntegerField(),
-        resources=serializers.IntegerField(),
-        tools=serializers.IntegerField()
-    )
-    
+
+    metrics = NetworkMetricsSerializer()
+    server_types = ServerTypesSerializer()
     top_tags = TopItemSerializer(many=True)
-    
-    time_series = serializers.Serializer(
-        servers=TimeSeriesPointSerializer(many=True),
-        requests=TimeSeriesPointSerializer(many=True)
-    )
+    time_series = NetworkTimeSeriesSerializer()
 
 class DailyServerAnalyticsSerializer(serializers.ModelSerializer):
     """Serializer for daily server analytics records."""
     server_name = serializers.CharField(source='server.name', read_only=True)
     error_rate = serializers.FloatField(read_only=True)
-    
-    class Meta:
+
+    class Meta: #type: ignore
         model = ServerAnalytics
         fields = [
             'id', 'server', 'server_name', 'date', 'total_requests',
@@ -118,7 +121,7 @@ class DailyServerAnalyticsSerializer(serializers.ModelSerializer):
 
 class ClientTrafficLogSerializer(serializers.ModelSerializer):
     """Serializer for client traffic logs."""
-    class Meta:
+    class Meta: #type: ignore
         model = ClientTrafficLog
         fields = [
             'id', 'client_id', 'date', 'servers_accessed',

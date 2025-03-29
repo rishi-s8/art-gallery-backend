@@ -6,6 +6,7 @@ from django.db.models import Count, Avg, Sum, F, Q
 from rest_framework import status, permissions, generics, views
 from rest_framework.response import Response
 from drf_spectacular.utils import extend_schema, OpenApiParameter
+from drf_spectacular.types import OpenApiTypes
 
 from servers.models import Server
 from servers.views import IsOwnerOrReadOnly
@@ -31,8 +32,8 @@ class ServerAnalyticsView(views.APIView):
         description="Retrieve usage analytics for a specific MCP server.",
         parameters=[
             OpenApiParameter(name='period', description='Time period for analytics', required=False, type=str, enum=['day', 'week', 'month', 'year']),
-            OpenApiParameter(name='start_date', description='Start date for custom time range (ISO format)', required=False, type=str, format='date'),
-            OpenApiParameter(name='end_date', description='End date for custom time range (ISO format)', required=False, type=str, format='date'),
+            OpenApiParameter(name='start_date', description='Start date for custom time range (ISO format)', required=False, type=OpenApiTypes.DATE),
+            OpenApiParameter(name='end_date', description='End date for custom time range (ISO format)', required=False, type=OpenApiTypes.DATE),
         ],
         responses={200: ServerAnalyticsSerializer}
     )

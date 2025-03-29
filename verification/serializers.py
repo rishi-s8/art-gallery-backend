@@ -25,6 +25,18 @@ class VerificationRequestSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """Create a verification request and generate a verification token."""
+        import secrets
+        from django.utils import timezone
+        from django.conf import settings
+
+        # Generate token and expiry before saving
+        verification_token = secrets.token_urlsafe(32)
+        verification_token_expiry = timezone.now() + settings.VERIFICATION_TOKEN_EXPIRY
+
+        # Add token and expiry to validated data
+        validated_data['verification_token'] = verification_token
+        validated_data['verification_token_expiry'] = verification_token_expiry
+
         verification_request = VerificationRequest.objects.create(**validated_data)
         verification_request.generate_verification_token()
 

@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
-from rest_framework import viewsets, status, permissions, generics, filters
+from rest_framework import viewsets, status, permissions, generics
+from rest_framework import filters as rest_filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
@@ -15,6 +16,20 @@ from .serializers import (
     ServerRatingSerializer,
     ServerRatingCreateSerializer
 )
+
+from django_filters import rest_framework as filters
+
+class ServerFilter(filters.FilterSet):
+    types = filters.CharFilter(field_name='types', method='filter_array_field')
+    tags = filters.CharFilter(field_name='tags', method='filter_array_field')
+
+    def filter_array_field(self, queryset, name, value):
+        lookup = f"{name}__contains"
+        return queryset.filter(**{lookup: [value]})
+
+    class Meta:
+        model = Server
+        fields = ['types', 'tags', 'verified']
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
     """
@@ -59,8 +74,9 @@ class ServerViewSet(viewsets.ModelViewSet):
     """
     ViewSet for viewing and editing server instances.
     """
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['types', 'tags', 'verified']
+    filter_backends = [DjangoFilterBackend, rest_filters.SearchFilter, rest_filters.OrderingFilter]
+    # filterset_fields = ['types', 'tags', 'verified']
+    filterset_class = ServerFilter
     search_fields = ['name', 'description', 'provider', 'tags']
     ordering_fields = ['name', 'created_at', 'rating', 'uptime']
     ordering = ['-created_at']

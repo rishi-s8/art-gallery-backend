@@ -55,10 +55,17 @@ class RequestLoggingMiddleware:
 
         # Only log request body in debug mode
         if settings.DEBUG and request.body:
-            try:
-                log_data['body'] = json.loads(request.body)
-            except json.JSONDecodeError:
-                log_data['body'] = str(request.body)
+            content_type = request.headers.get('Content-Type', '')
+            # Only try to parse as JSON if it's actually JSON
+            if 'application/json' in content_type:
+                try:
+                    log_data['body'] = json.loads(request.body)
+                except json.JSONDecodeError:
+                    log_data['body'] = str(request.body)
+            else:
+                # For non-JSON content, don't try to log the body or just log a message
+                log_data['body'] = f"[Body of type: {content_type} - not logged]"
+
 
         logger.info(f"Request: {json.dumps(log_data, default=str)}")
 

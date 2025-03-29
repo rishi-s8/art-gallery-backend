@@ -7,7 +7,6 @@ import requests
 from datetime import timedelta
 from celery import shared_task
 from django.utils import timezone
-from django.conf import settings
 from .models import Webhook, WebhookDelivery
 
 logger = logging.getLogger('mcp_nexus')

@@ -1,7 +1,8 @@
+from datetime import timedelta
 import os
 from pathlib import Path
-from datetime import timedelta
 from dotenv import load_dotenv
+from typing import Any, Dict, List
 
 # Load environment variables
 load_dotenv()
@@ -25,7 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+
     # Third-party apps
     'rest_framework',
     'rest_framework_simplejwt',
@@ -34,7 +35,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'django_extensions',
     'channels',
-    
+
     # Project apps
     'authentication',
     'servers',
@@ -59,8 +60,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'mcp_nexus.urls'
-
-TEMPLATES = [
+TEMPLATES: List[Dict[str, Any]] = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
@@ -110,7 +110,7 @@ CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 
 # Channels Configuration
-CHANNEL_LAYERS = {
+CHANNEL_LAYERS = { # type: ignore
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
@@ -139,7 +139,7 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTH_USER_MODEL = 'authentication.User'
 
 # REST Framework
-REST_FRAMEWORK = {
+REST_FRAMEWORK = { # type: ignore
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
@@ -154,7 +154,7 @@ REST_FRAMEWORK = {
 }
 
 # JWT Settings
-SIMPLE_JWT = {
+SIMPLE_JWT = { # type: ignore
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=14),
     'ROTATE_REFRESH_TOKENS': True,
@@ -170,7 +170,7 @@ SIMPLE_JWT = {
 }
 
 # API Documentation
-SPECTACULAR_SETTINGS = {
+SPECTACULAR_SETTINGS = { # type: ignore
     'TITLE': 'MCP Nexus API',
     'DESCRIPTION': 'The decentralized registry and discovery platform for Multi-Agent Communication Protocol (MCP) servers',
     'VERSION': '1.0.0',
@@ -214,7 +214,7 @@ if not DEBUG and os.environ.get('SENTRY_DSN'):
     )
 
 # Logging Configuration
-LOGGING = {
+LOGGING = { # type: ignore
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
@@ -258,7 +258,7 @@ VERIFICATION_CHECK_INTERVAL = timedelta(hours=12)
 ANALYTICS_RETENTION_DAYS = 90
 
 # API Rate Limiting
-REST_FRAMEWORK.update({
+REST_FRAMEWORK.update({ # type: ignore
     'DEFAULT_THROTTLE_CLASSES': [
         'rest_framework.throttling.AnonRateThrottle',
         'rest_framework.throttling.UserRateThrottle',

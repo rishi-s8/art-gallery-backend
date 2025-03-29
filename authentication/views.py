@@ -41,14 +41,14 @@ class RegisterView(generics.CreateAPIView):
 
         # This is a placeholder for the actual email sending logic
         # In a real implementation, this would likely be a Celery task
-        verification_url = f"{settings.FRONTEND_URL}/verify-email?token={user.verification_token}"
-        send_mail(
-            subject="Verify your email address",
-            message=f"Please verify your email address by clicking the following link: {verification_url}",
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[user.email],
-            fail_silently=False,
-        )
+        # verification_url = f"{settings.FRONTEND_URL}/verify-email?token={user.verification_token}"
+        # send_mail(
+        #     subject="Verify your email address",
+        #     message=f"Please verify your email address by clicking the following link: {verification_url}",
+        #     from_email=settings.DEFAULT_FROM_EMAIL,
+        #     recipient_list=[user.email],
+        #     fail_silently=False,
+        # )
 
         return Response(
             UserSerializer(user).data,

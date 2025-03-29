@@ -81,10 +81,11 @@ def validate_mcp_server_url(url):
     Performs a basic check by requesting the server's capabilities.
     """
     try:
-        response = requests.get(f"{url}/capabilities", timeout=5)
+        # TODO: Check for MCP specific headers instead of just README.md
+        response = requests.get(f"{url}", timeout=5)
         if response.status_code == 200:
-            return True, response.json()
-        return False, {"error": "Server did not return capabilities"}
+            return True, {"message": "Server is reachable", "response_time": response.elapsed.total_seconds()}
+        return False, {"error": "Website is not reachable or does not return a valid response"}
     except requests.RequestException as e:
         return False, {"error": str(e)}
 
@@ -93,7 +94,7 @@ def check_server_health(url):
     Check if an MCP server is healthy and responding.
     """
     try:
-        response = requests.get(f"{url}/health", timeout=3)
+        response = requests.get(f"{url}", timeout=3)
         return response.status_code == 200, response.elapsed.total_seconds()
     except requests.RequestException:
         return False, 0
