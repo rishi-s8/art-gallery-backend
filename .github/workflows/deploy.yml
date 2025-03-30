@@ -34,24 +34,12 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: mcp-nexus # Your EB application name
-          environment_name: mcp-nexus-prod # Your EB environment name
-          version_label: "mcp-nexus-${{ steps.format-time.outputs.replaced }}"
+          application_name: nanda-registry # Your EB application name
+          environment_name: nanda-registry-env # Your EB environment name
+          version_label: "nanda-registry-${{ steps.format-time.outputs.replaced }}"
           region: ${{ secrets.AWS_REGION }}
           deployment_package: deploy.zip
           wait_for_environment_recovery: 300 # Wait up to 5 minutes
-
-      - name: Deploy to EB
-        uses: einaregilsson/beanstalk-deploy@v21
-        with:
-          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: mcp-nexus
-          environment_name: mcp-nexus-prod
-          version_label: "mcp-nexus-${{ steps.format-time.outputs.replaced }}"
-          region: ${{ secrets.AWS_REGION }}
-          deployment_package: deploy.zip
-          wait_for_environment_recovery: 300
           environment_variables: >-
             DJANGO_SUPERUSER_USERNAME=${{ secrets.DJANGO_SUPERUSER_USERNAME }},
             DJANGO_SUPERUSER_EMAIL=${{ secrets.DJANGO_SUPERUSER_EMAIL }},
