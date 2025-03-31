@@ -32,14 +32,21 @@ services:
 
   migrations:
     build: .
-    command: bash -c "sleep 10 && python manage.py migrate --noinput && python manage.py ensure_superuser"
+    command: >
+      bash -c "
+        mkdir -p /app/logs &&
+        chmod 777 /app/logs &&
+        sleep 10 &&
+        python manage.py migrate --noinput &&
+        python manage.py ensure_superuser
+      "
     volumes:
       - ./:/app/
+      - logs_volume:/app/logs
     env_file:
       - ./.env
     depends_on:
       - db
-      - web
 
   redis:
     image: redis:7
