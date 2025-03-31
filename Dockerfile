@@ -27,6 +27,9 @@ COPY . /app/
 # Create media and static directories
 RUN mkdir -p /app/media /app/staticfiles /app/logs
 
+RUN mkdir -p /app/logs
+RUN chmod 777 /app/logs
+
 # Run as non-root user
 RUN useradd -m appuser
 RUN chown -R appuser:appuser /app

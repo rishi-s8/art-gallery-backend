@@ -39,6 +39,7 @@ services:
       - ./.env
     depends_on:
       - db
+      - web
 
   redis:
     image: redis:7
