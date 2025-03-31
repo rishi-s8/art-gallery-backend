@@ -30,6 +30,16 @@ services:
       - POSTGRES_DB=${DB_NAME}
     restart: always
 
+  migrations:
+    build: .
+    command: bash -c "sleep 10 && python manage.py migrate --noinput && python manage.py ensure_superuser"
+    volumes:
+      - ./:/app/
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+
   redis:
     image: redis:7
     volumes:
