@@ -17,7 +17,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-key-for-development-o
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
-ALLOWED_HOSTS += ['http://nanda.us-east-2.elasticbeanstalk.com/', 'https://nanda.us-east-2.elasticbeanstalk.com/']
+ALLOWED_HOSTS += ['nanda.us-east-2.elasticbeanstalk.com']
 
 # Application definition
 INSTALLED_APPS = [
