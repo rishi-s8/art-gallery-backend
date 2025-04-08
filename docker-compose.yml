@@ -32,14 +32,7 @@ services:
 
   migrations:
     build: .
-    command: >
-      bash -c "
-        mkdir -p /app/logs &&
-        chmod 777 /app/logs &&
-        sleep 10 &&
-        python manage.py migrate --noinput &&
-        python manage.py ensure_superuser
-      "
+    command: python /app/scripts/run_migrations.py
     volumes:
       - ./:/app/
       - logs_volume:/app/logs
