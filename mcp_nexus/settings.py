@@ -16,8 +16,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-key-for-development-o
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
-ALLOWED_HOSTS += ['nanda.us-east-2.elasticbeanstalk.com']
+PUB_IP = '18.191.100.234'
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', f'localhost,127.0.0.1,nanda.us-east-2.elasticbeanstalk.com,0284-18-29-222-203.ngrok-free.app,{PUB_IP}').split(',')
 
 # Application definition
 INSTALLED_APPS = [
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'analytics',
     'webhooks',
     'common',
+    'mcp_nexus',
 ]
 
 MIDDLEWARE = [
