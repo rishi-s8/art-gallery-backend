@@ -63,7 +63,7 @@ services:
 
   celery-beat:
     build: .
-    command: celery -A mcp_nexus beat -l info
+    command: celery -A mcp_nexus beat -l info --schedule /app/logs/celerybeat-schedule
     volumes:
       - ./:/app/
       - logs_volume:/app/logs

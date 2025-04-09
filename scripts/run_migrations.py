@@ -29,4 +29,8 @@ subprocess.check_call(["python", "manage.py", "migrate", "--noinput"])
 print("Ensuring superuser exists...")
 subprocess.check_call(["python", "manage.py", "ensure_superuser"])
 
-print("All migration tasks completed successfully!")
+# Collect static files
+print("Collecting static files...")
+subprocess.check_call(["python", "manage.py", "collectstatic", "--noinput"])
+
+print("All migration and static collection tasks completed successfully!")
