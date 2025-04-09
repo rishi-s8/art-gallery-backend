@@ -15,7 +15,11 @@ services:
     depends_on:
       - db
       - redis
-    restart: always
+    restart: on-failure
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 2
     # Run as root so entrypoint script can set permissions
     user: root
 
@@ -29,7 +33,11 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_DB=${DB_NAME}
-    restart: always
+    restart: on-failure
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 2
 
   migrations:
     build: .
@@ -45,6 +53,11 @@ services:
     depends_on:
       - db
       - web
+    restart: on-failure
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 2
     # Run as root so entrypoint script can set permissions
     user: root
 
@@ -52,7 +65,11 @@ services:
     image: redis:7
     volumes:
       - redis_data:/data
-    restart: always
+    restart: on-failure
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 2
 
   celery:
     build: .
@@ -66,7 +83,11 @@ services:
       - web
       - redis
       - db
-    restart: always
+    restart: on-failure
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 2
     # Run as root so entrypoint script can set permissions
     user: root
 
@@ -82,7 +103,11 @@ services:
       - web
       - redis
       - db
-    restart: always
+    restart: on-failure
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 2
     # Run as root so entrypoint script can set permissions
     user: root
 
@@ -98,7 +123,11 @@ services:
       - ./nginx/html:/usr/share/nginx/html
     depends_on:
       - web
-    restart: always
+    restart: on-failure
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 2
 
 volumes:
   postgres_data:
