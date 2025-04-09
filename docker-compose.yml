@@ -84,22 +84,10 @@ services:
       - ./nginx:/etc/nginx/conf.d
       - static_volume:/app/staticfiles
       - media_volume:/app/media
-      - certbot-etc:/etc/letsencrypt
-      - certbot-var:/var/lib/letsencrypt
       - ./nginx/html:/usr/share/nginx/html
     depends_on:
       - web
     restart: always
-
-  certbot:
-    image: certbot/certbot
-    volumes:
-      - certbot-etc:/etc/letsencrypt
-      - certbot-var:/var/lib/letsencrypt
-      - ./nginx/html:/usr/share/nginx/html
-    depends_on:
-      - nginx
-    command: certonly --webroot --webroot-path=/usr/share/nginx/html --email admin@mcpnexus.io --agree-tos --no-eff-email --staging -d mcpnexus.io -d www.mcpnexus.io
 
 volumes:
   postgres_data:
@@ -107,5 +95,3 @@ volumes:
   static_volume:
   media_volume:
   logs_volume:
-  certbot-etc:
-  certbot-var:
