@@ -20,8 +20,8 @@ DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
 PUB_IP = '18.191.100.234'
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', f'localhost,127.0.0.1,web,{PUB_IP}').split(',')
-ALLOWED_HOSTS.append('nanda.us-east-2.elasticbeanstalk.com')
-ALLOWED_HOSTS.append('main.d3fqo22chpm38w.amplifyapp.com')
+ALLOWED_HOSTS.append('new-nanda-registry.us-east-2.elasticbeanstalk.com')
+ALLOWED_HOSTS.append('nanda-registry.com')
 
 EC_2_INSTANCE_IP = None
 
@@ -222,8 +222,9 @@ SPECTACULAR_SETTINGS = { # type: ignore
 }
 
 # CORS Configuration
-CORS_ALLOW_ALL_ORIGINS = DEBUG
-CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', 'http://localhost:3000,http://localhost:8000').split(',')
+# CORS_ALLOW_ALL_ORIGINS = DEBUG
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', 'http://localhost:3000,http://localhost:8000,https://ui.nanda-registry.com,').split(',')
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'
