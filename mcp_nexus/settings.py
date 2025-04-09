@@ -4,6 +4,8 @@ from pathlib import Path
 from dotenv import load_dotenv
 from typing import Any, Dict, List
 
+import requests
+
 # Load environment variables
 load_dotenv()
 
@@ -17,7 +19,31 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-key-for-development-o
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
 PUB_IP = '18.191.100.234'
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', f'localhost,127.0.0.1,nanda.us-east-2.elasticbeanstalk.com,0284-18-29-222-203.ngrok-free.app,{PUB_IP}').split(',')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', f'localhost,127.0.0.1,web:8000,{PUB_IP}').split(',')
+ALLOWED_HOSTS.append('nanda.us-east-2.elasticbeanstalk.com')
+
+EC_2_INSTANCE_IP = None
+
+def get_instance_metadata(metadata_url: str) -> str:
+    # Get token
+    token_url = "http://169.254.169.254/latest/api/token"
+    token_headers = {"X-aws-ec2-metadata-token-ttl-seconds": "21600"}
+    token_response = requests.put(token_url, headers=token_headers)
+    token = token_response.text
+
+    # Use token to get metadata
+    metadata_headers = {"X-aws-ec2-metadata-token": token}
+    metadata_response = requests.get(metadata_url, headers=metadata_headers)
+    return metadata_response.text
+
+# do not get private IP address if running locally
+if 'AWS_EXECUTION_ENV' in os.environ:
+    # Get private IP address
+    EC_2_INSTANCE_IP = get_instance_metadata("http://169.254.169.254/latest/meta-data/local-ipv4") # type: ignore
+else:
+    EC_2_INSTANCE_IP = None # type: ignore
+if EC_2_INSTANCE_IP:
+    ALLOWED_HOSTS.append(EC_2_INSTANCE_IP)
 
 # Application definition
 INSTALLED_APPS = [
