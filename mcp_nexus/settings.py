@@ -19,7 +19,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-key-for-development-o
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
 PUB_IP = '18.191.100.234'
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', f'localhost,127.0.0.1,web:8000,{PUB_IP}').split(',')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', f'localhost,127.0.0.1,web,{PUB_IP}').split(',')
 ALLOWED_HOSTS.append('nanda.us-east-2.elasticbeanstalk.com')
 
 EC_2_INSTANCE_IP = None
