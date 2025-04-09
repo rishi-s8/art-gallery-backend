@@ -32,7 +32,8 @@ services:
 
   migrations:
     build: .
-    command: python /app/scripts/run_migrations.py
+    command: >
+      sh -c 'until curl -s http://web:8000 > /dev/null; do echo "Waiting for web service..."; sleep 5; done; python /app/scripts/run_migrations.py'
     volumes:
       - ./:/app/
       - logs_volume:/app/logs
@@ -40,6 +41,7 @@ services:
       - ./.env
     depends_on:
       - db
+      - web
 
   redis:
     image: redis:7
