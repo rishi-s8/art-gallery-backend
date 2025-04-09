@@ -12,15 +12,15 @@ def home_view(_: HttpRequest):
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <style>
             :root {
-                --primary: #6200ea;
-                --primary-light: #9d46ff;
-                --primary-dark: #0a00b6;
-                --secondary: #03dac6;
-                --text-on-primary: #ffffff;
-                --text-primary: #333333;
-                --text-secondary: #757575;
-                --background: #f8f9fa;
-                --card-bg: #ffffff;
+                --primary: #2c3e50;
+                --primary-light: #34495e;
+                --primary-dark: #1a252f;
+                --secondary: #16a085;
+                --text-on-primary: #ecf0f1;
+                --text-primary: #ecf0f1;
+                --text-secondary: #bdc3c7;
+                --background: #2c3e50;
+                --card-bg: #34495e;
                 --border-radius: 12px;
                 --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             }
@@ -34,7 +34,7 @@ def home_view(_: HttpRequest):
             body {
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                 background-color: var(--background);
-                background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5z' fill='%239C92AC' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
+                background-image: none;
                 color: var(--text-primary);
                 line-height: 1.6;
                 min-height: 100vh;
@@ -126,7 +126,7 @@ def home_view(_: HttpRequest):
             .card {
                 background-color: var(--card-bg);
                 border-radius: var(--border-radius);
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
                 padding: 3rem;
                 width: 100%;
                 max-width: 900px;
@@ -177,14 +177,14 @@ def home_view(_: HttpRequest):
                 text-decoration: none;
                 font-weight: 600;
                 margin-top: 1.5rem;
-                box-shadow: 0 4px 10px rgba(98, 0, 234, 0.2);
+                box-shadow: 0 4px 10px rgba(44, 62, 80, 0.2);
                 transition: var(--transition);
             }
 
             .cta-button:hover {
                 background-color: var(--primary-dark);
                 transform: translateY(-2px);
-                box-shadow: 0 6px 15px rgba(98, 0, 234, 0.3);
+                box-shadow: 0 6px 15px rgba(44, 62, 80, 0.3);
             }
 
             .links-container {
@@ -198,7 +198,7 @@ def home_view(_: HttpRequest):
             .link-card {
                 background-color: var(--background);
                 border-radius: var(--border-radius);
-                border: 1px solid rgba(98, 0, 234, 0.1);
+                border: 1px solid rgba(44, 62, 80, 0.1);
                 padding: 2rem 1rem;
                 transition: var(--transition);
                 display: flex;
@@ -230,7 +230,7 @@ def home_view(_: HttpRequest):
                 background-color: var(--primary);
                 color: var(--text-on-primary);
                 transform: translateY(-3px);
-                box-shadow: 0 10px 20px rgba(98, 0, 234, 0.2);
+                box-shadow: 0 10px 20px rgba(44, 62, 80, 0.2);
             }
 
             .link-card i {
@@ -266,7 +266,7 @@ def home_view(_: HttpRequest):
                 color: var(--text-secondary);
                 font-size: 0.9rem;
                 margin-top: 2rem;
-                border-top: 1px solid rgba(0,0,0,0.05);
+                border-top: 1px solid rgba(255,255,255,0.1);
                 background-color: var(--card-bg);
             }
 
@@ -284,7 +284,7 @@ def home_view(_: HttpRequest):
             }
 
             .footer-links a:hover {
-                color: var(--primary);
+                color: var(--secondary);
             }
 
             .status {
@@ -416,7 +416,7 @@ def home_view(_: HttpRequest):
                     <i class="fas fa-heartbeat"></i>
                 </div>
                 <h1 class="fadeIn">Nanda Registry</h1>
-                <p class="subtitle fadeIn delay-1">Comprehensive management platform for standardized nursing diagnoses</p>
+                <p class="subtitle fadeIn delay-1">Towards Decentralized AI</p>
             </div>
             <div class="wave"></div>
         </header>
@@ -425,7 +425,7 @@ def home_view(_: HttpRequest):
             <div class="card fadeIn delay-2">
                 <div class="intro">
                     <h2>Welcome to the Registry Server</h2>
-                    <p>Access and manage standardized nursing diagnoses through our secure and efficient platform, designed to streamline your workflow and enhance patient care.</p>
+                    <p>The registry server provides a list of available Agents, Resources and Tools.</p>
                     <a href="/api/docs/" class="cta-button">Get Started</a>
                 </div>
 
@@ -455,7 +455,7 @@ def home_view(_: HttpRequest):
         </main>
 
         <footer>
-            <p>&copy; 2025 Nanda Registry - A comprehensive platform for nursing diagnostic standards</p>
+            <p>&copy; 2025 Nanda Registry - A MIT Media Lab Project</p>
             <div class="footer-links">
                 <a href="#">Privacy Policy</a>
                 <a href="#">Terms of Service</a>
