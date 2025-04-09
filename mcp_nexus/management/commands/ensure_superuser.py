@@ -8,7 +8,7 @@ User = get_user_model()
 class Command(BaseCommand):
     help = 'Creates a superuser if none exists'
 
-    def handle(self, *args, **options):
+    def handle(self, *args, **options): # type: ignore
         if not User.objects.filter(is_superuser=True).exists():
             username = os.environ.get('DJANGO_SUPERUSER_USERNAME', 'admin')
             email = os.environ.get('DJANGO_SUPERUSER_EMAIL', 'admin@example.com')
@@ -18,7 +18,7 @@ class Command(BaseCommand):
                 self.stdout.write('Skipping superuser creation: No password provided')
                 return
 
-            User.objects.create_superuser(username=username, email=email, password=password)
+            User.objects.create_superuser(email=email, password=password) # type: ignore , our auth user model is overriding it
             self.stdout.write(self.style.SUCCESS(f'Superuser "{username}" created'))
         else:
             self.stdout.write('A superuser already exists')
