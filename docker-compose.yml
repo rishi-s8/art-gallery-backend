@@ -1,5 +1,4 @@
 version: "3.8"
-
 services:
   web:
     build: .
@@ -17,6 +16,8 @@ services:
       - db
       - redis
     restart: always
+    # Run as root so entrypoint script can set permissions
+    user: root
 
   db:
     image: postgres:14
@@ -36,12 +37,16 @@ services:
       sh -c 'until curl -s http://web:8000 > /dev/null; do echo "Waiting for web service..."; sleep 5; done; python /app/scripts/run_migrations.py'
     volumes:
       - ./:/app/
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
       - logs_volume:/app/logs
     env_file:
       - ./.env
     depends_on:
       - db
       - web
+    # Run as root so entrypoint script can set permissions
+    user: root
 
   redis:
     image: redis:7
@@ -62,6 +67,8 @@ services:
       - redis
       - db
     restart: always
+    # Run as root so entrypoint script can set permissions
+    user: root
 
   celery-beat:
     build: .
@@ -76,6 +83,8 @@ services:
       - redis
       - db
     restart: always
+    # Run as root so entrypoint script can set permissions
+    user: root
 
   nginx:
     image: nginx:1.21

@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libpq-dev \
     gettext \
     curl \
+    gosu \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -28,21 +29,21 @@ COPY . /app/
 # Create media and static directories
 RUN mkdir -p /app/media /app/staticfiles /app/logs
 
-# Ensure proper permissions for staticfiles directory
-RUN chmod 777 /app/staticfiles
+# Create the logs file if it doesn't exist
+RUN touch /app/logs/mcp_nexus.log
 
-RUN chmod 777 /app/logs
-
-# Run as non-root user
+# Add appuser
 RUN useradd -m appuser
-RUN chown -R appuser:appuser /app
-USER appuser
+
+# Copy entrypoint script
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 # Expose the port the app runs on
 EXPOSE 8000
 
-# Create the logs file if it doesn't exist
-RUN touch /app/logs/mcp_nexus.log
+# Use entrypoint script
+ENTRYPOINT ["/entrypoint.sh"]
 
 # Command to run the application
 CMD ["gunicorn", "mcp_nexus.wsgi:application", "--bind", "0.0.0.0:8000"]
