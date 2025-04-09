@@ -18,7 +18,7 @@ class Command(BaseCommand):
                 self.stdout.write('Skipping superuser creation: No password provided')
                 return
 
-            User.objects.create_superuser(username, email, password)
+            User.objects.create_superuser(username=username, email=email, password=password)
             self.stdout.write(self.style.SUCCESS(f'Superuser "{username}" created'))
         else:
             self.stdout.write('A superuser already exists')
