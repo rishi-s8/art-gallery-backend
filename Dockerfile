@@ -28,6 +28,9 @@ COPY . /app/
 # Create media and static directories
 RUN mkdir -p /app/media /app/staticfiles /app/logs
 
+# Ensure proper permissions for staticfiles directory
+RUN chmod 777 /app/staticfiles
+
 RUN chmod 777 /app/logs
 
 # Run as non-root user

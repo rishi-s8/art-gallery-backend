@@ -12,17 +12,18 @@ def home_view(_: HttpRequest):
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <style>
             :root {
-                --primary: #2c3e50;
-                --primary-light: #34495e;
-                --primary-dark: #1a252f;
-                --secondary: #16a085;
-                --text-on-primary: #ecf0f1;
-                --text-primary: #ecf0f1;
-                --text-secondary: #bdc3c7;
-                --background: #2c3e50;
-                --card-bg: #34495e;
+                --primary: #8B0000; /* Crimson */
+                --primary-light: #A52A2A; /* Lighter Crimson */
+                --primary-dark: #5A0000; /* Darker Crimson */
+                --secondary: #FFD700; /* Gold */
+                --text-on-primary: #FFFFFF; /* White */
+                --text-primary: #FFFFFF; /* White */
+                --text-secondary: #D3D3D3; /* Light Gray */
+                --background: #1C1C1C; /* Very Dark Gray */
+                --card-bg: rgba(255, 255, 255, 0.1); /* Glassmorphism effect */
                 --border-radius: 12px;
                 --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+                --backdrop-filter: blur(10px); /* Glassmorphism blur */
             }
 
             * {
@@ -134,6 +135,8 @@ def home_view(_: HttpRequest):
                 transition: var(--transition);
                 position: relative;
                 overflow: hidden;
+                backdrop-filter: var(--backdrop-filter); /* Glassmorphism effect */
+                border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border for glass effect */
             }
 
             .card:before {
@@ -148,7 +151,7 @@ def home_view(_: HttpRequest):
 
             .card:hover {
                 transform: translateY(-5px);
-                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
             }
 
             .intro {
@@ -196,9 +199,9 @@ def home_view(_: HttpRequest):
             }
 
             .link-card {
-                background-color: var(--background);
+                background-color: var(--card-bg);
                 border-radius: var(--border-radius);
-                border: 1px solid rgba(44, 62, 80, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.2);
                 padding: 2rem 1rem;
                 transition: var(--transition);
                 display: flex;
@@ -208,6 +211,7 @@ def home_view(_: HttpRequest):
                 color: var(--text-primary);
                 position: relative;
                 overflow: hidden;
+                backdrop-filter: var(--backdrop-filter);
             }
 
             .link-card:before {
@@ -230,7 +234,7 @@ def home_view(_: HttpRequest):
                 background-color: var(--primary);
                 color: var(--text-on-primary);
                 transform: translateY(-3px);
-                box-shadow: 0 10px 20px rgba(44, 62, 80, 0.2);
+                box-shadow: 0 10px 20px rgba(44, 62, 80, 0.3);
             }
 
             .link-card i {
