@@ -29,6 +29,14 @@ subprocess.check_call(["python", "manage.py", "migrate", "--noinput"])
 print("Ensuring superuser exists...")
 subprocess.check_call(["python", "manage.py", "ensure_superuser"])
 
+# Setup pglogical
+print("Setting up pglogical...")
+subprocess.check_call(["python", "manage.py", "setup_pglogical"])
+
+# Create repuser
+print("Creating replication user...")
+subprocess.check_call(["python", "manage.py", "create_repuser"])
+
 # Collect static files
 print("Collecting static files...")
 subprocess.check_call(["python", "manage.py", "collectstatic", "--noinput"])
