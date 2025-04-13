@@ -18,7 +18,7 @@ def initiate_verification(server_id):
 
         # Check if server exists and is accessible
         try:
-            response = requests.get(f"{server.url.rstrip('/')}/health", timeout=5)
+            response = requests.get(f"{server.url.rstrip('/')}", timeout=5)
             is_up = response.status_code == 200
             response_time = response.elapsed.total_seconds()
         except Exception as e:
@@ -62,7 +62,7 @@ def check_server_health(server_id):
 
         try:
             # Check if server is up
-            response = requests.get(f"{server.url.rstrip('/')}/health", timeout=5)
+            response = requests.get(f"{server.url.rstrip('/')}", timeout=5)
             is_up = response.status_code == 200
             response_time = response.elapsed.total_seconds()
             status_code = response.status_code
