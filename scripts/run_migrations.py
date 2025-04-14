@@ -37,6 +37,10 @@ subprocess.check_call(["python", "manage.py", "setup_pglogical"])
 print("Creating replication user...")
 subprocess.check_call(["python", "manage.py", "create_repuser"])
 
+# Subscribe to pglogical
+print("Subscribing to pglogical...")
+subprocess.check_call(["python", "manage.py", "subscribe_pglogical"])
+
 # Collect static files
 print("Collecting static files...")
 subprocess.check_call(["python", "manage.py", "collectstatic", "--noinput"])
